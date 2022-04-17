@@ -1,1 +1,1 @@
-print("OTA UPDATED 5")
+print("Güncellenmeden önceki yazı")
