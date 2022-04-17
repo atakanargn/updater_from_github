@@ -11,3 +11,21 @@ github : release kısmına erişmek istediğiniz github hesabı
 repo : aynı github hesabı içerisindeki repository
 run : Güncelleme yapıldıktan sonra çalışacak olan dosya
 version : indirilecek olan dosyanın versiyonu
+
+## Repoyu indirdikten hemen sonra şu şekil de test edebilirsiniz.
+Ilk indirdiğinizde ya da klonladığınızda
+dosyalar içerisinde "start.py" dosyasını göreceksiniz.
+
+Dosya içeriğine bir bakın.
+
+ver.json içerisinde de benim hesabımda bir repoya işaret ettiğini ve version'un 1 olduğunu görebilirsiniz.
+
+Aşağıdaki reponun release kısmına bakacak olursanız, latest release'in tag'i "2"'dir, bizdeki ise "1" olarak gözüküyor yani yazılım güncelleme alacaktır.
+https://github.com/atakanargn/NODEMCU_OTA
+
+# Geliştirme
+Proje bilerek yarım bırakılmış haldedir.
+Eklenebilecekler;
+"Yeni sürüm var. Program güncellensin mi?" Yes|No dialog'u.
+
+Pyinstaller ile derleyip kullanabilirsiniz. Sadece kaynak kod değil, binary dosyalar için de güncelleme sistemi olarak kullanabilirsiniz.
