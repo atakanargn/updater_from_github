@@ -1,1 +1,6 @@
-{"github": "atakanargn", "repo": "NODEMCU_OTA", "run": "python ./start.py", "version": 2}
+{
+    "github": "atakanargn",
+    "repo": "NODEMCU_OTA",
+    "run": "python ./start.py",
+    "version": 1
+}
