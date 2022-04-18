@@ -2,7 +2,7 @@ from requests import get
 from os import listdir, rmdir, mkdir, getcwd, chdir
 from os.path import isfile, join
 from shutil import move
-from sys import stdout, argv, executable
+from sys import stdout, argv, executable, exit
 from json import loads, dumps
 from subprocess import Popen
 from ctypes import windll
@@ -10,25 +10,29 @@ from logger import log_exception
 
 class CDS:
     @log_exception
-    def __init__(self,file,control_and_run=True,cwd=getcwd(),admin_control=False):
+    def __init__(self,file):
         print("Sürüm kontrolü...")
-        self.cwd = cwd
         self.file = file
-        self.options = loads(open(file,"r").read())
-        self.owner   = self.options['github']
-        self.repo    = self.options['repo']
-        self.version = self.options['version']
-        self.run     = self.options['run']
-        self.control_and_run = control_and_run
+        self.options       = loads(open(file,"r").read())
+        self.cwd           = self.options['cwd'] if self.options['cwd']!=False else getcwd()
+        self.owner         = self.options['github']
+        self.repo          = self.options['repo']
+        self.version       = self.options['version']
+        self.run           = self.options['run']
+        self.admin_control = self.options['admin']
 
-        if admin_control:
-            if self.is_admin()==False:
+        if self.admin_control:
+            if self.is_admin():
                 chdir(self.cwd)
-                pass
+                self.control()
             else:
                 windll.shell32.ShellExecuteW(None, "runas", executable, " ".join(argv), None, 1)
-
-        self.control()
+                try:
+                    self.exit()
+                except:
+                    pass
+        else:
+            self.control()
 
     @log_exception
     def is_admin(self):
@@ -54,20 +58,20 @@ class CDS:
             filename = NEW_VERSION_URL.split("/")[-1]
             self.download(filename,NEW_VERSION_URL)
 
-            files = [f for f in listdir("update") if isfile(join(".", f))==True]
+            files = [f for f in listdir("{}/update".format(self.cwd))]
             for file in files:
-                move("./update/{}".format(filename), "./{}".format(filename))
+                move("{}/update/{}".format(self.cwd,filename), "{}/{}".format(self.cwd,filename))
                 print('Güncelleme tamamlandı')
             self.options['version']=int(req.json()['tag_name'])
-            open(self.file,"w+").write(dumps(self.options))
-            rmdir("./update")
-        if self.control_and_run:
+            open("{}/{}".format(self.cwd,self.file),"w+").write(dumps(self.options))
+            rmdir("{}/update".format(self.cwd))
+        if self.run!=False:
             Popen(self.run)
     
     @log_exception
     def download(self,filename,link):
         chdir(self.cwd)
-        with open("{}{}".format("./update/",filename), "wb") as f:
+        with open("{}/{}/{}".format(self.cwd,"update",filename), "wb") as f:
             print("Indiriliyor %s" % filename)
             response = get(link, stream=True)
             total_length = response.headers.get('content-length')
@@ -83,3 +87,9 @@ class CDS:
                     done = int(50 * dl / total_length)
                     stdout.write("\r[%s%s]\n" % ('=' * done, ' ' * (32-done)) )    
                     stdout.flush()
+    
+    def exit(self):
+        try:
+            exit()
+        except:
+            pass
