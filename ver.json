@@ -1,6 +1,8 @@
 {
     "github": "atakanargn",
     "repo": "NODEMCU_OTA",
+    "admin": true,
     "run": "python ./start.py",
-    "version": 1
+    "cwd": false,
+    "version": 2
 }
