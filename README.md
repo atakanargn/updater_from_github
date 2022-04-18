@@ -11,6 +11,8 @@ github : release kısmına erişmek istediğiniz github hesabı
 repo : aynı github hesabı içerisindeki repository
 run : Güncelleme yapıldıktan sonra çalışacak olan dosya
 version : indirilecek olan dosyanın versiyonu
+admin : Başladığında admin izinleri kontrolü, bool değer alabilir
+cwd : işlem yapacağı klasör, boş bırakılırsa bulunduğu klasörünü alır
 
 ## Repoyu indirdikten hemen sonra şu şekil de test edebilirsiniz.
 Ilk indirdiğinizde ya da klonladığınızda
